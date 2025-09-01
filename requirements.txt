@@ -3,3 +3,6 @@ pandas>=2.2
 plotly>=5.22
 python-dateutil>=2.9
 python-dotenv
+requests
+beautifulsoup4
+polars
