@@ -71,7 +71,7 @@ for _, row in playlists_df.iterrows():
                 "transcript_text": full_text,
                 "transcript_segments": json.dumps(segments)
             })
-            time.sleep(1)
+            time.sleep(5)
         except Exception as e:
             print(f"    ❌ Failed for {video_url}: {e}")
 
