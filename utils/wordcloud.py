@@ -16,6 +16,7 @@ def show_wordcloud(df):
         # font_min=20,
         # font_max=100,
         # padding=5,
+        font_scale=0.5,
         palette="plasma_r",
         layout="rectangular",
         enable_tooltip=True,

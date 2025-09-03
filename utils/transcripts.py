@@ -86,7 +86,7 @@ for _, row in playlists_df.iterrows():
                 continue
             manager = find_manager(club, pd.to_datetime(publish_date))
             print(f"    ⏩ Fetching transcript for {video_id}")
-            transcript = ytt_api.fetch(video_id)
+            transcript = ytt_api.fetch(video_id,languages=['en'])
             
             print(f"    ⏩ Fetched transcript for {video_id}")
             
