@@ -10,11 +10,13 @@ st.title("Expected Clichés")
 
 st.markdown(
     """
-    Welcome to the Expected Clichés dashboard, brought to you by [xGuff.substack.com](https://xguff.substack.com)<br>
+    Welcome to the Expected Clichés dashboard, brought to you by <a href="https://xguff.substack.com" style="color: #da7842;">xGuff.substack.com</a><br>
     
-    Inspired by the likes of Bryan's Gunn and the Football Clichés Podcast, I'm on a mission to develop the definitive database of football managers (and occasionally journalists) saying classic football phrases.<br>
+    Inspired by the likes of <a href="https://x.com/bryansgunn?lang=en-GB" style="color: #da7842;">Bryan's Gunn</a> and the <a href="https://open.spotify.com/show/6U4LfcF1ymFwxRDEsUq3Gd" style="color: #da7842;">Football Clichés Podcast</a>, I'm on a mission to develop the definitive database of football managers (and occasionally journalists) saying classic football phrases.<br>
 
-    Please explore my *world-leading* data through the feed below, and the various charting options on the left sidebar.
+    You can find me writing about this data and more on my <a href="https://xguff.substack.com" style="color: #da7842;">Substack</a>.
+
+    Please explore my *world-leading* data through the video feed below, and the various charting options on the left sidebar.
     """,
     unsafe_allow_html=True
 )
