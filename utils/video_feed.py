@@ -7,6 +7,8 @@ def show_video_feed(df):
         st.markdown(f"**{row['club']} ({row['manager']}):** *{row['cliche']}*")
         st.markdown(f"**Published:** {pd.to_datetime(row['publish_date']).date()}")
         st.markdown(f"**Excerpt:** {row['segment_text']}")
+        minutes, seconds = divmod(int(row['start_time']), 60) if pd.notnull(row['start_time']) else (0, 0)
+        st.markdown(f"**Timestamp:** {minutes:02d}:{seconds:02d}")
         video_id = row['video_id']
         start_time = int(row['start_time']) if pd.notnull(row['start_time']) else 0
         st.markdown(

@@ -3,7 +3,7 @@ import pandas as pd
 import altair as alt
 from utils.sidebar import sidebar_filters
 
-st.title("Expected Clichés Rankings")
+st.title("Expected clichés rankings")
 
 # Load data
 transcripts_df = pd.read_csv("data/raw/transcripts.csv")
@@ -29,10 +29,10 @@ word_counts = transcripts_df.groupby('club')['transcript_cleaned'] \
 cliche_counts = cliches_df.groupby('club').size().reindex(word_counts.index, fill_value=0)
 
 rankings = pd.DataFrame({
-    'Total Words': word_counts,
-    'Total Clichés': cliche_counts,
+    'Total words': word_counts,
+    'Total clichés': cliche_counts,
 })
-rankings['Clichés per 10,000 Words'] = (
+rankings['Clichés per 10,000 words'] = (
     cliche_counts.div(word_counts.replace(0, pd.NA)) * 10000
 ).fillna(0)
 
@@ -79,12 +79,12 @@ def hbar_sorted(series: pd.Series, title: str, x_title: str, fmt: str | None = N
     )
 
 # ---------- Charts ----------
-st.subheader("Clichés per 10,000 Words")
+st.subheader("Clichés per 10,000 words")
 st.altair_chart(
     hbar_sorted(
-        rankings['Clichés per 10,000 Words'],
+        rankings['Clichés per 10,000 words'],
         title="",
-        x_title="Clichés per 10,000 Words",
+        x_title="Clichés per 10,000 words",
         fmt=".1f",
         scheme="plasma",   # base scheme
         reverse=True       # reversed -> plasma_r
@@ -92,12 +92,12 @@ st.altair_chart(
     use_container_width=True
 )
 
-st.subheader("Total Words")
+st.subheader("Total words")
 st.altair_chart(
     hbar_sorted(
-        rankings['Total Words'],
+        rankings['Total words'],
         title="",
-        x_title="Total Words",
+        x_title="Total words",
         fmt=",.0f",
         scheme="plasma",
         reverse=True
@@ -105,8 +105,18 @@ st.altair_chart(
     use_container_width=True
 )
 
-st.subheader("Full Rankings Table")
-rankings_sorted = rankings.sort_values('Clichés per 10,000 Words', ascending=False).reset_index()
+st.subheader("Full rankings table")
+rankings_sorted = rankings.sort_values('Clichés per 10,000 words', ascending=False).reset_index()
 rankings_sorted.rename(columns={'club': 'Club'}, inplace=True)
 rankings_sorted.insert(0, "Rank", rankings_sorted.index + 1)
 st.dataframe(rankings_sorted, hide_index=True, height=len(rankings_sorted) * 35 + 40)
+
+# -------------------- Help text --------------------
+with st.expander("How this is calculated"):
+    st.markdown(
+        """
+**Metric:** For each club and date we compute:
+- total words and total clichés (within each club);
+- **cumulative clichés per 10,000 words = (total clichés / total words) × 10,000**.
+        """
+    )

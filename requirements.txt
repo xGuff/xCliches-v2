@@ -1,8 +1,12 @@
 streamlit>=1.36
 pandas>=2.2
 plotly>=5.22
+altair>=5.3
 python-dateutil>=2.9
-python-dotenv
-requests
-beautifulsoup4
-polars
+python-dotenv>=1.0
+requests>=2.31
+beautifulsoup4>=4.12
+polars>=0.20
+streamlit-js-eval>=0.1.7
+pytube>=15.0
+youtube-transcript-api>=0.4.6
