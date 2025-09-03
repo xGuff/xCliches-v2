@@ -10,3 +10,4 @@ polars>=0.20
 streamlit-js-eval>=0.1.7
 pytube>=15.0
 youtube-transcript-api>=0.4.6
+streamlit-wordcloud
