@@ -11,12 +11,7 @@ def show_wordcloud(df):
 
     st.session_state['wordcloud'] = wordcloud.visualize(
         words,
-        # width=wc_width,                 # int pixels (NOT "100%")
-        # height=wc_height,               # set height explicitly
-        # font_min=20,
-        # font_max=100,
-        # padding=5,
-        font_scale=0.5,
+        font_scale=1,
         palette="plasma_r",
         layout="rectangular",
         enable_tooltip=True,
