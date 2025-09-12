@@ -4,8 +4,9 @@ import altair as alt
 from utils.sidebar import sidebar_filters
 import math
 
+st.set_page_config(layout="centered", page_title="Trends", page_icon="utils/images/favicon.png")
 st.title("Cliché trends over time")
-
+st.logo("utils/images/banner.png", size="large")
 # -------------------- Data loaders --------------------
 @st.cache_data
 def load_core():
@@ -145,6 +146,14 @@ base = alt.Chart(ts).encode(
         title="Cumulative clichés per 10,000 words",
         scale=alt.Scale(domain=y_domain)  # shared y-limits
     ),
+    tooltip=[
+        alt.Tooltip("publish_date:T", title="Date"),
+        alt.Tooltip("club:N", title="Club"),
+        alt.Tooltip("manager_name:N", title="Manager on this date"),
+        alt.Tooltip("cum_cliches:Q", title="Cumulative cliché hits"),
+        alt.Tooltip("cum_words:Q", title="Cumulative words", format=",.0f"),
+        alt.Tooltip("cliches_per_10k:Q", title="Cum. clichés /10k", format=".2f"),
+    ]
 ).properties(width="container")
 
 line = base.mark_line().encode(
@@ -163,13 +172,16 @@ points = base.mark_point(size=38, filled=True, opacity=0.85).encode(
     color=alt.Color("club:N", scale=alt.Scale(domain=domain, range=range_), legend=None),
 )
 
-# Dashed rules that stop just below the top label
+# Dashed rules that stop at the bottom of the vertical label text
+label_offset = 8  # must match dx in label mark
+text_height = 30  # rough estimate of text height in y units (tweak as needed)
+rule_bottom = y_domain[1] - top_pad + (text_height / 2)
 rules = alt.Chart(ts).transform_filter(
     alt.datum.is_manager_change == True
 ).mark_rule(strokeDash=[4, 4], opacity=0.8).encode(
     x=alt.X("publish_date:T", scale=alt.Scale(domain=x_domain)),
     y=alt.Y("cliches_per_10k:Q"),
-    y2=alt.value(y_domain[1] - top_pad),  # stop just below top
+    y2=alt.value(rule_bottom),  # stop at bottom of label
     color=alt.Color("club:N", scale=alt.Scale(domain=domain, range=range_), legend=None),
     tooltip=[
         alt.Tooltip("publish_date:T", title="Manager change on"),
@@ -178,21 +190,27 @@ rules = alt.Chart(ts).transform_filter(
     ],
 )
 
-# Labels perfectly centered at top of the rule
+
+# Vertical, left-aligned manager change labels just to the left of the dashed line
 labels = alt.Chart(ts).transform_filter(
     alt.datum.is_manager_change == True
 ).mark_text(
-    angle=0,
-    align="center",
-    baseline="bottom",  # ensures text sits exactly at y-value
-    dy=-2,              # slight upward offset for perfect alignment
+    angle=270,  # vertical text
+    align="right",  # left of the line
+    baseline="bottom",  # bottom of text aligns with y
+    dx=-label_offset,  # shift left from the line
     fontSize=11,
     fontWeight="bold"
 ).encode(
     x=alt.X("publish_date:T", scale=alt.Scale(domain=x_domain)),
-    y=alt.value(y_domain[1] - top_pad),  # match rule's top
+    y=alt.value(rule_bottom),  # match rule's bottom
     text="change_label:N",
     color=alt.Color("club:N", scale=alt.Scale(domain=domain, range=range_), legend=None),
+    tooltip=[
+        alt.Tooltip("publish_date:T", title="Manager change on"),
+        alt.Tooltip("prev_manager:N", title="From"),
+        alt.Tooltip("manager_name:N", title="To"),
+    ]
 )
 
 layered = alt.layer(rules, line, points, labels, data=ts)

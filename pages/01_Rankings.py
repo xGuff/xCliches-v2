@@ -3,7 +3,10 @@ import pandas as pd
 import altair as alt
 from utils.sidebar import sidebar_filters
 
+st.set_page_config(layout="centered", page_title="Rankings", page_icon="utils/images/favicon.png")
 st.title("Expected clichés rankings")
+st.logo("utils/images/banner.png", size="large")
+
 
 # Load data
 transcripts_df = pd.read_csv("data/raw/transcripts.csv")
@@ -12,12 +15,18 @@ cliches_df = pd.read_csv("data/processed/cliche_hits.csv")
 # Sidebar filters
 season, league, club, start_date, end_date = sidebar_filters(transcripts_df)
 
-# Filter by dates/club
+# Filter by season, dates, and club
+transcripts_df = transcripts_df[transcripts_df['season'] == season]
+cliches_df = cliches_df[cliches_df['season'] == season]
+
 cliches_df['publish_date'] = pd.to_datetime(cliches_df['publish_date'])
 start_date = pd.to_datetime(start_date)
 end_date = pd.to_datetime(end_date)
 cliches_df = cliches_df[(cliches_df['publish_date'] >= start_date) &
                         (cliches_df['publish_date'] <= end_date)]
+transcripts_df['publish_date'] = pd.to_datetime(transcripts_df['publish_date'])
+transcripts_df = transcripts_df[(transcripts_df['publish_date'] >= start_date) &
+                                (transcripts_df['publish_date'] <= end_date)]
 if club != "All Clubs":
     cliches_df = cliches_df[cliches_df['club'] == club]
     transcripts_df = transcripts_df[transcripts_df['club'] == club]
@@ -109,6 +118,11 @@ st.subheader("Full rankings table")
 rankings_sorted = rankings.sort_values('Clichés per 10,000 words', ascending=False).reset_index()
 rankings_sorted.rename(columns={'club': 'Club'}, inplace=True)
 rankings_sorted.insert(0, "Rank", rankings_sorted.index + 1)
+
+# Format decimal columns to 2 places
+rankings_sorted['Clichés per 10,000 words'] = rankings_sorted['Clichés per 10,000 words'].map('{:.2f}'.format)
+# rankings_sorted['Total clichés'] = rankings_sorted['Total clichés'].map('{:.2f}'.format)
+
 st.dataframe(rankings_sorted, hide_index=True, height=len(rankings_sorted) * 35 + 40)
 
 # -------------------- Help text --------------------

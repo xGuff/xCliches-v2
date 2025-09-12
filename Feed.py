@@ -5,8 +5,20 @@ from utils.video_feed import show_video_feed
 from utils.sidebar import sidebar_filters  # <-- Import your sidebar filter function
 from streamlit_js_eval import streamlit_js_eval
 
-st.set_page_config(layout="centered", page_title="Expected Clichés")
+st.set_page_config(layout="centered", page_title="Expected Clichés", page_icon="utils/images/favicon.png")
+
+banner = "utils/images/banner.png"
+favicon = "utils/images/favicon.png"
+logo = "utils/images/logo.png"
+options = [banner, favicon, logo]
+# sidebar_logo = st.selectbox("Sidebar logo", options, 0)
+# main_body_logo = st.selectbox("Main body logo", options, 1)
+
+st.logo(banner, size="large")
+
 st.title("Expected Clichés")
+
+
 
 st.markdown(
     """
