@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from utils.wordcloud import show_wordcloud
 from utils.video_feed import show_video_feed
-from utils.sidebar import sidebar_filters  # <-- Import your sidebar filter function
+from utils.sidebar import sidebar_filters
 from streamlit_js_eval import streamlit_js_eval
 
 st.set_page_config(layout="centered", page_title="Expected Clichés", page_icon="utils/images/favicon.png")
